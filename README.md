@@ -1,23 +1,16 @@
-# indy-did-resolver
-Proof of Concept resolver for the [did:indy method](https://hyperledger.github.io/indy-did-method/).
+# IDunion Indy DID Resolver
 
-The code depends on [indy-vdr](https://github.com/hyperledger/indy-vdr) and could be merged ideally in the longterm.
+This Github project was forked from [IDunion indy-did-resolver](https://github.com/IDunion/indy-did-resolver) to be used locally as a part of our Interoperable SSI Access Control System. All credits go to [IDunion](https://github.com/IDunion).
 
-This software could be used as a driver for the [Universal Resolver](https://github.com/decentralized-identity/universal-resolver).
+## Indy DID Resolver
 
-# Usage
+This project is used as a driver of the [Universal Resolver](https://github.com/decentralized-identity/universal-resolver) for resolving Decentralized Identifiers (DIDs) of the Indy DID Method. 
 
-The project can be built using standard rust tooling: `cargo build` or exectued via `cargo run` 
+The driver is configured to connect to a local Indy network (local instance of the [VON network](https://github.com/bcgov/von-network)). The genesis file of this network is stored in `/networks/local/pool_transactions_genesis.json`. To resolve a DID anchored on this Indy network, use the following did syntax: did:indy:local:<identifier>. The driver is reached by the Universal Resolver via HTTP requests (default on port 8080) using the following url: `http://<container_name>:8080/1.0/identifiers/did:indy:local:<DID_identifier>`
 
-Logging can be enabled using the environment variable`RUST_LOG`, e.g. `RUST_LOG=debug ./indy-did-driver`
+## Additional Information from original repository
 
-### Default configuration
-- default port is 8080
-- default network registry is https://github.com/IDunion/indy-did-networks
-
-The driver can be reached via HTTP, e.g.  curl http://localhost:8080/1.0/identifiers/<did>
-
-### CLI options
+### CLI options for starting the driver. See docker/Dockerfile
 ```
     -f, --genesis-filename <GENESIS_FILENAME>
             Pool transaction genesis filename [default: pool_transactions_genesis.json]
@@ -38,15 +31,3 @@ The driver can be reached via HTTP, e.g.  curl http://localhost:8080/1.0/identif
     -V, --version
             Print version information
 ```
-### Local development
-
-The resolver can also be configured to resolve local/custom indy networks for development purposes, e.g. [von-network](https://github.com/bcgov/von-network).
-Create a folder structure like the following:
-
-```
-networks/
-   └──local/
-         └──pool_transactions_genesis.json
-
-```
-Start the indy-did-driver with the option `-s <path/to/networks>` and resolve via `did:indy:local:<DID>`
